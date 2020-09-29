@@ -95,7 +95,7 @@
 		ACD148991FF17DE00008EA7B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Alexandre Daoud";
 				TargetAttributes = {
 					ACD148A11FF17DE00008EA7B = {
