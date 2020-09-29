@@ -4,7 +4,6 @@
 
 ## Build generated
 build/
-Build/
 DerivedData/
 
 ## Various settings
@@ -23,8 +22,4 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
-.DS_Store
-VoodooI2C\ Satellites/*
-docs/index.html
-docs/search.json
-docs/xml/*
+*.DS_Store
