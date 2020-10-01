@@ -14,8 +14,6 @@
 #include <IOKit/IOLib.h>
 #include <IOKit/IOKitKeys.h>
 #include <IOKit/IOService.h>
-
-#include <IOKit/IOLib.h>
 #include <IOKit/IOWorkLoop.h>
 #include <IOKit/IOInterruptEventSource.h>
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
@@ -66,7 +64,7 @@ class VoodooI2CSynapticsDevice : public IOService
 {
     typedef IOService super;
     OSDeclareDefaultStructors(VoodooI2CSynapticsDevice);
-    
+
 private:
     IOACPIPlatformDevice* acpi_device;
     VoodooI2CDeviceNub* api;
@@ -74,90 +72,90 @@ private:
     UInt16 hid_descriptor_register;
     IOInterruptEventSource* interrupt_source;
     IOTimerEventSource* interrupt_simulator; /* Sasha - Implement polling mode */
-    
+
     OSArray* transducers;
-    
+
     uint16_t max_x;
     uint16_t max_y;
-    
+
     int page;
-    
+
     unsigned long flags;
-    
+
     struct rmi_function f01;
     struct rmi_function f11;
     struct rmi_function f12;
     struct rmi_function f30;
-    
+
     unsigned int max_fingers;
     unsigned int x_size_mm;
     unsigned int y_size_mm;
     bool read_f11_ctrl_regs;
     uint8_t f11_ctrl_regs[RMI_F11_CTRL_REG_COUNT];
-    
+
     unsigned int gpio_led_count;
     unsigned int button_count;
     unsigned long button_mask;
     unsigned long button_state_mask;
-    
+
     unsigned long device_flags;
     unsigned long firmware_id;
-    
+
     uint8_t f01_ctrl0;
     uint8_t interrupt_enable_mask;
     bool restore_interrupt_mask;
-    
+
     VoodooI2CMultitouchInterface* mt_interface;
-    
+
 protected:
     bool awake;
     const char* name;
     IOWorkLoop* work_loop;
     bool reading;
-    
+
 public:
     void stop(IOService* device) override;
-    
+
     bool start(IOService* api) override;
-    
+
     bool init(OSDictionary* properties) override;
-    
+
     VoodooI2CSynapticsDevice* probe(IOService* provider, SInt32* score) override;
-    
+
     void interruptOccured(OSObject* owner, IOInterruptEventSource* src, int intCount);
-    
+
     void get_input();
-    
+
     IOReturn setPowerState(unsigned long powerState, IOService *whatDevice) override;
-    
+
     int rmi_read_block(uint16_t addr, uint8_t *buf, const int len);
     int rmi_write_report(uint8_t *report, size_t report_size);
     int rmi_read(uint16_t addr, uint8_t *buf);
     int rmi_write_block(uint16_t addr, uint8_t *buf, const int len);
     int rmi_write(uint16_t addr, uint8_t *buf);
     void rmi_register_function(struct pdt_entry *pdt_entry, int page, unsigned interrupt_count);
-    
+
     int rmi_scan_pdt();
     int rmi_populate_f01();
     int rmi_populate_f11();
     int rmi_populate_f12();
     int rmi_populate_f30();
     int rmi_populate();
-    
+
     int rmi_set_mode(uint8_t mode);
-    
+
     int rmi_set_page(uint8_t _page);
-    
+
     void rmi_f11_process_touch(OSArray* transducers, int transducer_id, AbsoluteTime timestamp, uint8_t finger_state, uint8_t *touch_data);
     int rmi_f11_input(OSArray* transducers, AbsoluteTime timestamp, uint8_t *rmiInput);
     int rmi_f30_input(OSArray* transducers, AbsoluteTime timestamp, uint8_t irq, uint8_t *rmiInput, int size);
     void TrackpadRawInput(uint8_t report[40]);
-    
+
     bool publish_multitouch_interface();
     void unpublish_multitouch_interface();
-    
+
     void releaseResources();
-    
+
     void simulateInterrupt(OSObject* owner, IOTimerEventSource* timer); /* Sasha - Implement polling mode */
 };
 
