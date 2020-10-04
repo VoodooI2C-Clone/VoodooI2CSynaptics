@@ -268,9 +268,8 @@ int VoodooI2CSynapticsDevice::rmi_read_block(uint16_t addr, uint8_t *buf, const 
     }
 
     uint8_t writeReport[21];
-    for (int i = 0; i < 21; i++) {
-        writeReport[i] = 0;
-    }
+    memset(writeReport, 0, sizeof(writeReport));
+
     writeReport[0] = RMI_READ_ADDR_REPORT_ID;
     writeReport[1] = 0;
     writeReport[2] = addr & 0xFF;
@@ -305,6 +304,8 @@ exit:
 
 int VoodooI2CSynapticsDevice::rmi_write_report(uint8_t *report, size_t report_size){
     uint8_t command[25];
+    memset(command, 0, sizeof(command));
+
     command[0] = 0x25;
     command[1] = 0x00;
     command[2] = 0x17;
@@ -312,6 +313,7 @@ int VoodooI2CSynapticsDevice::rmi_write_report(uint8_t *report, size_t report_si
     for (int i = 0; i < report_size; i++) {
         command[i + 4] = report[i];
     }
+
     IOReturn ret = api->writeI2C(command, sizeof(command));
 
     if (ret != kIOReturnSuccess)
@@ -333,16 +335,14 @@ int VoodooI2CSynapticsDevice::rmi_write_block(uint16_t addr, uint8_t *buf, const
 {
     int ret;
 
-    uint8_t writeReport[21];
-    for (int i = 0; i < 21; i++) {
-        writeReport[i] = 0;
-    }
-
     if (RMI_PAGE(addr) != page) {
         ret = rmi_set_page(RMI_PAGE(addr));
         if (ret < 0)
             goto exit;
     }
+
+    uint8_t writeReport[21];
+    memset(writeReport, 0, sizeof(writeReport));
 
     writeReport[0] = RMI_WRITE_REPORT_ID;
     writeReport[1] = len;
@@ -365,8 +365,10 @@ exit:
 
 int VoodooI2CSynapticsDevice::rmi_set_page(uint8_t _page)
 {
-    uint8_t writeReport[21];
     int retval;
+
+    uint8_t writeReport[21];
+    memset(writeReport, 0, sizeof(writeReport));
 
     writeReport[0] = RMI_WRITE_REPORT_ID;
     writeReport[1] = 1;
