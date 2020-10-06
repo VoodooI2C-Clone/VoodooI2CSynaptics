@@ -228,12 +228,9 @@ bool VoodooI2CSynapticsDevice::start(IOService* api) {
     api->joinPMtree(this);
     registerPowerDriver(this, VoodooI2CIOPMPowerStates, kVoodooI2CIOPMNumberPowerStates);
 
-    setProperty("VoodooI2CServices Supported", kOSBooleanTrue);
-
     publish_multitouch_interface();
 
     reading = false;
-
 
     return true;
 exit:
